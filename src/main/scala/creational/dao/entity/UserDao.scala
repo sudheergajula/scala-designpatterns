@@ -43,7 +43,6 @@ protected abstract class GenericDao[T] extends Dao[T] {
     } match {
       case Success(session) => {
         session.save(obj)
-        val persistedObj = session.beginTransaction()
         onSuccess(session)
         obj
       }
