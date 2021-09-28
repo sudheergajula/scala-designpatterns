@@ -1,7 +1,8 @@
-package creational.caching.policy
+package creational.caching
 
-import creational.caching.{LRUCache, UserDao}
-import creational.caching.policy.CachingPolicy.CachingPolicy
+import creational.caching.entity.UserAccount
+import creational.caching.store.cache.{CachingPolicy, WriteThroughCache}
+import creational.caching.store.db.UserDao
 
 import scala.io.Source
 
@@ -48,7 +49,7 @@ object App {
     println(user)
 
     val user1 = manager.get(1)
-    println(user1)
+    println(user1.get)
 
   }
 }

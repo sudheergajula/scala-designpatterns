@@ -1,4 +1,4 @@
-package creational.caching.policy
+package creational.caching.entity
 
 import javax.persistence.{GenerationType, _}
 

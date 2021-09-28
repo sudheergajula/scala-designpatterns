@@ -1,6 +1,8 @@
-package creational.caching.policy
+package creational.caching.store.cache
 
-import creational.caching.{LRUCache, UserDao}
+import creational.caching.entity.UserAccount
+import creational.caching.LRUCache
+import creational.caching.store.db.UserDao
 
 import scala.util.{Failure, Success, Try}
 

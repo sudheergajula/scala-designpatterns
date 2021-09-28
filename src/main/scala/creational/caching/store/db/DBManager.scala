@@ -1,6 +1,6 @@
-package creational.caching
+package creational.caching.store.db
 
-import creational.caching.policy.UserAccount
+import creational.caching.entity.UserAccount
 import org.hibernate.cfg.Configuration
 import org.hibernate.{Session, SessionFactory, Transaction}
 

@@ -1,4 +1,4 @@
-package creational.caching.policy
+package creational.caching.store.cache
 
 trait CacheStore[T] {
 

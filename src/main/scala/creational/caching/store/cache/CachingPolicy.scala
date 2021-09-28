@@ -1,4 +1,4 @@
-package creational.caching.policy
+package creational.caching.store.cache
 
 object CachingPolicy extends Enumeration {
   type CachingPolicy = Value

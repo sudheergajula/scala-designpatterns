@@ -1,7 +1,7 @@
 package creational.caching
 
 
-import creational.caching.policy.UserAccount
+import creational.caching.entity.UserAccount
 
 import scala.collection.mutable
 
