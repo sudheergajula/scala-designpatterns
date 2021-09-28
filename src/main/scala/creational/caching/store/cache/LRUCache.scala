@@ -1,5 +1,4 @@
-package creational.caching
-
+package creational.caching.store.cache
 
 import creational.caching.entity.UserAccount
 

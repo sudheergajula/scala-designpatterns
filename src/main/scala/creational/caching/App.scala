@@ -1,7 +1,8 @@
 package creational.caching
 
 import creational.caching.entity.UserAccount
-import creational.caching.store.cache.{CachingPolicy, WriteThroughCache}
+import creational.caching.store.cache.CachingPolicy.CachingPolicy
+import creational.caching.store.cache.{CachingPolicy, LRUCache, WriteThroughCache}
 import creational.caching.store.db.UserDao
 
 import scala.io.Source
@@ -11,18 +12,15 @@ case class PersistenceManager(capacity: Int,
 
   val userDao = new UserDao
   val cache = new LRUCache(capacity)
+  lazy val manager = cachePolicy match {
+    case CachingPolicy.WRITE_THROUGH => new WriteThroughCache(cache, userDao)
+  }
 
-  def persist(user: UserAccount): Unit = {
-    val manager = cachePolicy match {
-      case CachingPolicy.WRITE_THROUGH => new WriteThroughCache(cache, userDao)
-    }
+  def put(user: UserAccount): Unit = {
     manager.add(user)
   }
 
   def get(userId: Int): Option[UserAccount] = {
-    val manager = cachePolicy match {
-      case CachingPolicy.WRITE_THROUGH => new WriteThroughCache(cache, userDao)
-    }
     manager.get(userId)
   }
 }
@@ -43,7 +41,7 @@ object App {
           .setLastName(token(2))
           .setGender(token(3))
           .setAge(Integer.valueOf(token(4)))
-      }).foreach(user => manager.persist(user))
+      }).foreach(user => manager.put(user))
 
     val user = manager.get(16)
     println(user)
