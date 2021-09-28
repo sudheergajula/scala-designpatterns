@@ -1,7 +1,7 @@
 package creational.dao.entity1
 
 import creational.dao.entity.User
-import org.hibernate.{Session, SessionFactory}
+import org.hibernate.{Session, SessionFactory, Transaction}
 import org.hibernate.cfg.Configuration
 
 import scala.util.{Failure, Success, Try}
@@ -15,7 +15,8 @@ trait Dao[T] {
 }
 
 trait Abstract[T] {
-
+  private var session: Session = _
+  private var transaction: Transaction = _
   var sessionFactory: SessionFactory = buildSession()
 
   def getSession() = sessionFactory.openSession()
@@ -32,18 +33,29 @@ trait Abstract[T] {
     }
   }
 
+  def destroySession(): Unit = {
+    if (session.isOpen) {
+      session.flush()
+      session.close()
+    }
+  }
+
   def dbTrans[T](callBack: Session => T): T = {
     Try {
-      val session: Session = getSession()
+      session = getSession()
       session
     } match {
       case Success(session) =>
         session.beginTransaction()
         val result = callBack(session)
         session.getTransaction.commit()
-        session.close()
+        destroySession()
         result
       case Failure(exception) =>
+        if (transaction != null) {
+          transaction.rollback()
+          destroySession()
+        }
         throw exception
     }
   }
