@@ -1,9 +1,9 @@
-package creational.caching
+package com.designpatterns.creational.caching
 
-import creational.caching.entity.UserAccount
-import creational.caching.store.cache.CachingPolicy.CachingPolicy
-import creational.caching.store.cache.{CachingPolicy, EmptyCache, LRUCache, WriteAroundCache, WriteBackCache, WriteBehindCache, WriteThroughCache}
-import creational.caching.store.db.UserDao
+import com.designpatterns.creational.caching.entity.UserAccount
+import com.designpatterns.creational.caching.store.cache.CachingPolicy.CachingPolicy
+import com.designpatterns.creational.caching.store.cache._
+import com.designpatterns.creational.caching.store.db.UserDao
 
 import scala.io.Source
 

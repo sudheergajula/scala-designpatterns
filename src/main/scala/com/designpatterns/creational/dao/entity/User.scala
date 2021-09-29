@@ -1,6 +1,6 @@
-package creational.dao.entity
+package com.designpatterns.creational.dao.entity
 
-import javax.persistence.{GenerationType, PrePersist, PreUpdate, _}
+import javax.persistence.{GenerationType, _}
 
 @Table(name = "user")
 @Entity

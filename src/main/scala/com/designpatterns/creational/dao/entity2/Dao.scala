@@ -1,7 +1,6 @@
-package creational.dao.entity2
+package com.designpatterns.creational.dao.entity2
 
-import creational.dao.entity
-import creational.dao.entity.User
+import com.designpatterns.creational.dao.entity.User
 import org.hibernate.cfg.Configuration
 import org.hibernate.{Session, SessionFactory, Transaction}
 
@@ -91,9 +90,9 @@ class UserDao extends AbstractDao[User] with Dao[User] {
     })
   }
 
-  def getUserById(id: Int): entity.User ={
+  def getUserById(id: Int): User ={
     dbSession(session => {
-      val user = session.get(classOf[entity.User], id)
+      val user = session.get(classOf[User], id)
       user
     })
   }

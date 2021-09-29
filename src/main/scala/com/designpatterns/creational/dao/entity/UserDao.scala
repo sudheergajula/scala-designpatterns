@@ -1,4 +1,4 @@
-package creational.dao.entity
+package com.designpatterns.creational.dao.entity
 
 import org.hibernate.cfg.Configuration
 import org.hibernate.{Session, SessionFactory}

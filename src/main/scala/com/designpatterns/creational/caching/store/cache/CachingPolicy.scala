@@ -1,4 +1,4 @@
-package creational.caching.store.cache
+package com.designpatterns.creational.caching.store.cache
 
 object CachingPolicy extends Enumeration {
   type CachingPolicy = Value

@@ -1,6 +1,6 @@
-package creational.caching.store.cache
+package com.designpatterns.creational.caching.store.cache
 
-import creational.caching.entity.UserAccount
+import com.designpatterns.creational.caching.entity.UserAccount
 
 import scala.collection.mutable
 

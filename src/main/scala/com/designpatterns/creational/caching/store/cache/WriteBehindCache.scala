@@ -1,7 +1,7 @@
-package creational.caching.store.cache
+package com.designpatterns.creational.caching.store.cache
 
-import creational.caching.entity.UserAccount
-import creational.caching.store.db.UserDao
+import com.designpatterns.creational.caching.entity.UserAccount
+import com.designpatterns.creational.caching.store.db.UserDao
 
 import scala.util.{Failure, Success, Try}
 

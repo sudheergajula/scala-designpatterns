@@ -1,4 +1,4 @@
-package creational.caching.entity
+package com.designpatterns.creational.caching.entity
 
 import javax.persistence.{GenerationType, _}
 

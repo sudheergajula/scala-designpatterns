@@ -1,6 +1,6 @@
-package creational.dao.entity2
+package com.designpatterns.creational.dao.entity2
 
-import creational.dao.entity.User
+import com.designpatterns.creational.dao.entity.User
 
 object App {
 

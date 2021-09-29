@@ -1,4 +1,4 @@
-package creational.dao.entity
+package com.designpatterns.creational.dao.entity
 
 object App {
 
