@@ -117,7 +117,7 @@ class LRUCache(capacity: Int) extends Cache[Int, UserAccount] {
     var curr = head
     if (curr.id == user.id) {
       cache.remove(user.id)
-      head = null
+      head = curr.next
       return
     }
     while (curr.id != user.id && curr != null) {
