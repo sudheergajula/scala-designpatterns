@@ -2,7 +2,7 @@ package creational.caching
 
 import creational.caching.entity.UserAccount
 import creational.caching.store.cache.CachingPolicy.CachingPolicy
-import creational.caching.store.cache.{CachingPolicy, LRUCache, WriteThroughCache}
+import creational.caching.store.cache.{CachingPolicy, EmptyCache, LRUCache, WriteAroundCache, WriteBehindCache, WriteThroughCache}
 import creational.caching.store.db.UserDao
 
 import scala.io.Source
@@ -14,6 +14,10 @@ case class PersistenceManager(capacity: Int,
   val cache = new LRUCache(capacity)
   lazy val manager = cachePolicy match {
     case CachingPolicy.WRITE_THROUGH => new WriteThroughCache(cache, userDao)
+
+    case CachingPolicy.WRITE_BEHIND => new WriteBehindCache(cache, userDao)
+
+    case CachingPolicy.WRITE_AROUND => new WriteAroundCache(cache, userDao)
   }
 
   def put(user: UserAccount): Unit = {
@@ -28,7 +32,7 @@ case class PersistenceManager(capacity: Int,
 object App {
 
   def main(args: Array[String]): Unit = {
-    val manager = PersistenceManager(10)
+    val manager = PersistenceManager(10, cachePolicy = CachingPolicy.WRITE_BEHIND)
 
     val source = Source.fromFile("src/main/resources/test_data.txt")
     source.getLines()

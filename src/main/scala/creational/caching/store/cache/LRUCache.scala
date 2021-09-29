@@ -7,12 +7,48 @@ import scala.collection.mutable
 
 class Node(val id: Int, val user: UserAccount, var prev: Node = null, var next: Node = null)
 
-class LRUCache(capacity: Int) {
-  val cache: mutable.Map[Int, UserAccount] = scala.collection.mutable.HashMap[Int, UserAccount]()
+trait Cache[K, V] {
+  val cache: mutable.Map[K, V] = scala.collection.mutable.HashMap[K, V]()
+
+  def add(obj: V): Unit
+
+  def remove(obj: V): Unit
+
+  def get(key: K): Option[V]
+
+  def isFull(): Boolean
+
+  def containsKey(key: Int): Boolean
+}
+
+class EmptyCache extends Cache[Int, UserAccount] {
+
+  override def add(obj: UserAccount): Unit = {
+
+  }
+
+  override def remove(obj: UserAccount): Unit = {
+
+  }
+
+  override def get(key: Int): Option[UserAccount] = {
+    None
+  }
+
+  override def isFull(): Boolean = false
+
+  def containsKey(key: Int): Boolean = true
+}
+
+class LRUCache(capacity: Int) extends Cache[Int, UserAccount] {
   var head: Node = _
   var tail: Node = _
 
   def isFull: Boolean = cache.size >= capacity
+
+  def containsKey(key: Int): Boolean = cache.contains(key)
+
+  def lastNode: Node = tail
 
   def add(user: UserAccount): Unit = {
     if (cache.isEmpty) {
