@@ -1,9 +1,9 @@
-package com.designpatterns.creational.caching
+package com.designpatterns.persistence.caching
 
-import com.designpatterns.creational.caching.entity.UserAccount
-import com.designpatterns.creational.caching.store.cache.CachingPolicy.CachingPolicy
-import com.designpatterns.creational.caching.store.cache._
-import com.designpatterns.creational.caching.store.db.UserDao
+import com.designpatterns.persistence.caching.entity.UserAccount
+import com.designpatterns.persistence.caching.store.cache.CachingPolicy.CachingPolicy
+import com.designpatterns.persistence.caching.store.cache._
+import com.designpatterns.persistence.caching.store.db.UserDao
 
 import scala.io.Source
 

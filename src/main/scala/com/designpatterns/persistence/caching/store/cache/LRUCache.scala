@@ -1,6 +1,6 @@
-package com.designpatterns.creational.caching.store.cache
+package com.designpatterns.persistence.caching.store.cache
 
-import com.designpatterns.creational.caching.entity.UserAccount
+import com.designpatterns.persistence.caching.entity.UserAccount
 
 import scala.collection.mutable
 
@@ -44,7 +44,7 @@ class LRUCache(capacity: Int) extends Cache[Int, UserAccount] {
   var head: Node = _
   var tail: Node = _
 
-  def isFull: Boolean = cache.size >= capacity
+  def isFull(): Boolean = cache.size >= capacity
 
   def containsKey(key: Int): Boolean = cache.contains(key)
 

@@ -1,4 +1,4 @@
-package com.designpatterns.creational.caching.store.cache
+package com.designpatterns.persistence.caching.store.cache
 
 trait CacheStore[T] {
 

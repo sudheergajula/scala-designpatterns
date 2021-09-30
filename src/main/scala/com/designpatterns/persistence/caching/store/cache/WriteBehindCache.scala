@@ -1,25 +1,24 @@
-package com.designpatterns.creational.caching.store.cache
+package com.designpatterns.persistence.caching.store.cache
 
-import com.designpatterns.creational.caching.entity.UserAccount
-import com.designpatterns.creational.caching.store.db.UserDao
+import com.designpatterns.persistence.caching.entity.UserAccount
+import com.designpatterns.persistence.caching.store.db.UserDao
 
 import scala.util.{Failure, Success, Try}
 
-class WriteAroundCache(cache: Cache[Int, UserAccount], userDao: UserDao) extends CacheStore[UserAccount] {
+class WriteBehindCache(cache: LRUCache, userDao: UserDao) extends CacheStore[UserAccount] {
 
 
   override def add(user: UserAccount): Unit = {
     Try {
-      if (cache.containsKey(user.id)) {
-        userDao.update(user)
-        cache.remove(user)
-      } else {
-        userDao.addUser(user)
+      if (cache.isFull && !cache.containsKey(user.id)) {
+        val lastUsedUserAccount = cache.lastNode.user
+        println(s"evicting user ${lastUsedUserAccount.toString}")
+        userDao.updateUser(user)
       }
       user
     } match {
       case Success(value) =>
-        println(s"add user to db ${value.id}")
+        cache.add(value)
       case Failure(exception) =>
         throw exception
     }

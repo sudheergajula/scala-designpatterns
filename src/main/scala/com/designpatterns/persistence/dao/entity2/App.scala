@@ -1,6 +1,6 @@
-package com.designpatterns.creational.dao.entity2
+package com.designpatterns.persistence.dao.entity2
 
-import com.designpatterns.creational.dao.entity.User
+import com.designpatterns.persistence.dao.entity.User
 
 object App {
 

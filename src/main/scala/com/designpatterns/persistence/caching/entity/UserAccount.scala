@@ -1,10 +1,10 @@
-package com.designpatterns.creational.dao.entity
+package com.designpatterns.persistence.caching.entity
 
 import javax.persistence.{GenerationType, _}
 
 @Table(name = "user")
 @Entity
-class User extends Serializable {
+class UserAccount extends Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,22 +23,27 @@ class User extends Serializable {
   @Column(name = "gender", nullable = false)
   var gender: String = _
 
-  def setFirstName(name: String): User = {
+  def setFirstName(name: String): UserAccount = {
     this.first_name = name
     this
   }
 
-  def setLastName(name: String): User = {
+  def setId(id: Int): UserAccount = {
+    this.id = id
+    this
+  }
+
+  def setLastName(name: String): UserAccount = {
     this.last_name = name
     this
   }
 
-  def setAge(age: Int): User = {
+  def setAge(age: Int): UserAccount = {
     this.age = age
     this
   }
 
-  def setGender(gender: String): User = {
+  def setGender(gender: String): UserAccount = {
     this.gender = gender
     this
   }

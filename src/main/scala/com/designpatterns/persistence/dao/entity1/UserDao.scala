@@ -1,6 +1,6 @@
-package com.designpatterns.creational.dao.entity1
+package com.designpatterns.persistence.dao.entity1
 
-import com.designpatterns.creational.dao.entity.User
+import com.designpatterns.persistence.dao.entity.User
 import org.hibernate.cfg.Configuration
 import org.hibernate.{Session, SessionFactory, Transaction}
 

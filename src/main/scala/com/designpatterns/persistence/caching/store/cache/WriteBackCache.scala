@@ -1,11 +1,11 @@
-package com.designpatterns.creational.caching.store.cache
+package com.designpatterns.persistence.caching.store.cache
 
-import com.designpatterns.creational.caching.entity.UserAccount
-import com.designpatterns.creational.caching.store.db.UserDao
+import com.designpatterns.persistence.caching.entity.UserAccount
+import com.designpatterns.persistence.caching.store.db.UserDao
 
 import scala.util.{Failure, Success, Try}
 
-class WriteThroughCache(cache: LRUCache, userDao: UserDao) extends CacheStore[UserAccount] {
+class WriteBackCache(cache: LRUCache, userDao: UserDao) extends CacheStore[UserAccount] {
 
 
   override def add(user: UserAccount): Unit = {
@@ -34,11 +34,19 @@ class WriteThroughCache(cache: LRUCache, userDao: UserDao) extends CacheStore[Us
 
   }
 
+  /**
+   * If hits cache miss then add value to cache.
+   *
+   * @param id
+   * @return
+   */
   override def get(id: Int): Option[UserAccount] = {
     val user = cache.get(id).getOrElse({
       println("********* CACHE MISS *********")
       println("======== fetching from database ======== ")
-      userDao.getUserById(id)
+      val user = userDao.getUserById(id)
+      cache.add(user)
+      user
     })
     Some(user)
   }

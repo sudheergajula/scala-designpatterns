@@ -1,7 +1,8 @@
-package com.designpatterns.creational.dao.entity
+package com.designpatterns.persistence.caching.store.db
 
+import com.designpatterns.persistence.caching.entity.UserAccount
 import org.hibernate.cfg.Configuration
-import org.hibernate.{Session, SessionFactory}
+import org.hibernate.{Session, SessionFactory, Transaction}
 
 import scala.util.{Failure, Success, Try}
 
@@ -17,6 +18,9 @@ trait Dao[T] {
 protected abstract class GenericDao[T] extends Dao[T] {
 
   var sessionFactory = buildSessionFactory
+
+  var session: Session = _
+  var transaction: Transaction = _
 
   protected def getSessionFactory: SessionFactory = sessionFactory
 
@@ -38,36 +42,47 @@ protected abstract class GenericDao[T] extends Dao[T] {
 
   override def insert(obj: T): T = {
     Try {
-      val currentSession = getSessionFactory.openSession()
-      currentSession
+      session = getSessionFactory.openSession()
+      session
     } match {
       case Success(session) => {
+        session.beginTransaction()
         session.save(obj)
         onSuccess(session)
         obj
       }
       case Failure(exception) =>
+        onFailure(session)
         throw exception
+    }
+  }
+
+  private def onFailure(session: Session): Unit = {
+    if (session != null && session.isOpen) {
+      session.getTransaction.rollback()
+      session.flush()
+      session.close()
     }
   }
 
   override def update(obj: T): T = {
     Try {
-      val currentSession = getSessionFactory.openSession()
-      currentSession
+      session = getSessionFactory.openSession()
+      session
     } match {
       case Success(session) => {
         session.merge(obj)
-        val persistedObj = session.beginTransaction()
+        session.beginTransaction()
         onSuccess(session)
         obj
       }
       case Failure(exception) =>
+        onFailure(session)
         throw exception
     }
   }
 
-  def onSuccess(session: Session) = {
+  def onSuccess(session: Session): Unit = {
     session.flush()
     session.getTransaction.commit()
     session.close()
@@ -76,50 +91,41 @@ protected abstract class GenericDao[T] extends Dao[T] {
 
   override def delete(obj: T): T = {
     Try {
-      val currentSession = getSessionFactory.openSession()
-      currentSession
+      session = getSessionFactory.openSession()
+      session
     } match {
-      case Success(session) => {
+      case Success(session) =>
         session.delete(obj)
         session.beginTransaction()
         onSuccess(session)
         obj
-      }
       case Failure(exception) =>
+        onFailure(session)
         throw exception
     }
   }
 }
 
-class UserDao extends GenericDao[User] {
+class UserDao extends GenericDao[UserAccount] {
 
-  def addUser(fName: String,
-              lName: String,
-              age: Int,
-              gender: String): User = {
-    val user = new User
-    user
-      .setFirstName(fName)
-      .setLastName(lName)
-      .setAge(age)
-      .setGender(gender)
+  def addUser(user: UserAccount): UserAccount = {
     insert(user)
   }
 
-  def removeUser(user: User): User = {
+  def removeUser(user: UserAccount): UserAccount = {
     delete(user)
   }
 
-  def getUserByName(firstName: String, lastName: String): User = {
+  def getUserByName(firstName: String, lastName: String): UserAccount = {
     val query = getSession.createQuery(s"from User where first_name =:firstName and last_name =:lastName",
-      classOf[User])
+      classOf[UserAccount])
     query.setParameter("firstName", firstName)
     query.setParameter("lastName", lastName)
     query.getSingleResult
   }
 
-  def getUserById(id: Int): User = {
-    val result = getSession.get(classOf[User], id)
+  def getUserById(id: Int): UserAccount = {
+    val result = getSession.get(classOf[UserAccount], id)
     result
   }
 
@@ -128,7 +134,7 @@ class UserDao extends GenericDao[User] {
     delete(user)
   }
 
-  def updateUser(user: User): User = {
+  def updateUser(user: UserAccount): UserAccount = {
     update(user)
   }
 
