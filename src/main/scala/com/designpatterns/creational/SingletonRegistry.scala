@@ -2,7 +2,7 @@ package com.designpatterns.creational
 
 object SingletonRegistry {
 
-  val userMap = scala.collection.mutable.HashMap[String, String]()
+  private val userMap = scala.collection.mutable.HashMap[String, String]()
 
   def addUserToCache(userId: String, userName: String): Unit = {
     userMap.put(userId, userName)
@@ -17,8 +17,16 @@ object SingletonRegistry {
   }
 
   def printUsers(): Unit = {
-    println(userMap.values.toList.mkString(","))
+    println(userMap.values.toList.mkString("=>"))
   }
 
+}
 
+object App {
+  def main(args: Array[String]): Unit = {
+    SingletonRegistry.addUserToCache("1", "Sudheer")
+    SingletonRegistry.addUserToCache("2", "foo")
+    SingletonRegistry.addUserToCache("3", "bar")
+    SingletonRegistry.printUsers()
+  }
 }
